@@ -26,7 +26,7 @@ class MongoProductDao{
             logger.info(products)
             return asProdDto(products)
         } catch (error) {
-            logger.error(`error en MongoProductDao metodo getAll: ${error}`)
+            logger.error(`error en CrudProductDao metodo getAll: ${error}`)
         }
     }
 
@@ -35,7 +35,7 @@ class MongoProductDao{
             const product = await this.product.findOne({ _id: idSearching })
             return asProdDto(product)    
         } catch (error) {
-            logger.error(`error en MongoProductDao metodo getById: ${error}`)
+            logger.error(`error en CrudProductDao metodo getById: ${error}`)
         }
 
     }
@@ -46,7 +46,7 @@ class MongoProductDao{
             await this.product.create(newProduct)
             return asProdDto(newProduct)
         } catch (error) {
-            logger.error(`error en MongoProductDao metodo save: ${error}`)
+            logger.error(`error en CrudProductDao metodo save: ${error}`)
         }
 
     }
@@ -56,7 +56,7 @@ class MongoProductDao{
             const prodDelete = await this.product.findOneAndDelete({ _id: idByDelete })
             return asProdDto(prodDelete)
         } catch (error) {
-            logger.error(`error en MongoProductDao metodo deleteById: ${error}`)
+            logger.error(`error en CrudProductDao metodo deleteById: ${error}`)
         }
 
     }
@@ -65,7 +65,7 @@ class MongoProductDao{
         try {
             await this.product.deleteMany({})
         } catch (error) {
-            logger.error(`error en MongoProductDao metodo deleteAll: ${error}`)
+            logger.error(`error en CrudProductDao metodo deleteAll: ${error}`)
         }
     }
 
@@ -74,7 +74,7 @@ class MongoProductDao{
             const prodUpdate = await this.product.findOneAndUpdate({ _id: idByChange }, { $set: newInput })
             return asProdDto(prodUpdate)    
         } catch (error) {
-            logger.error(`error en MongoProductDao metodo updateById: ${error}`)
+            logger.error(`error en CrudProductDao metodo updateById: ${error}`)
         }
 
     }

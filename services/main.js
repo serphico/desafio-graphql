@@ -1,18 +1,42 @@
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
-const productSv = require('./productSv/productSv')
+const productSv = require('./productSv/productSv');
 
-let findAll = productSv.findAll();
-let findById = productSv.findById();
-let saveNewProd = productSv.saveNewProd();
-let deleteAProd = productSv.deleteAProd();
-let deleteAllProd = productSv.deleteAllProd();
-let updateProdById = productSv.updateProdById();
+function allProds() {
+    const allProds = productSv.findAll();
+    return allProds
+}
+
+function oneProd(id) {
+    const oneProds = productSv.findById(id);
+    return oneProds
+}
+
+function saveProd(newProd) {
+    console.log(newProd.datos)
+    const saveProd = productSv.saveNewProd(newProd.datos);
+    return saveProd
+}
+
+function updateProd(allObj) {
+    const saveProd = productSv.updateProdById(allObj._id, allObj.datos);
+    return saveProd
+}
+
+function deleteProd(id) {
+    const deleteProd = productSv.deleteAProd(id);
+    return deleteProd
+}
+
+function deleteAll() {
+    const deleteAll = productSv.deleteAllProd();
+    return deleteAll
+}
 
 const schema = buildSchema(`
   type Products {
-    id: ID!,
+    _id: ID!,
     title: String,
     price: Int,
     description: String,
@@ -27,35 +51,32 @@ const schema = buildSchema(`
     category: String
   }
   type Query {
-    findById(id: ID!): Products,
-    findAll: [Products],
+    allProds: [Products],
+    oneProd(_id: ID!): Products,
   }
   type Mutation {
-    saveNewProd(datos: ProductsInput): Products
-    updateProdById(id: ID!, datos: ProductsInput): Products,
-    deleteAProd(id: ID!): Products,
-    deleteAllProd: Products,
+    saveProd(datos: ProductsInput): Products,
+    updateProd(_id: ID!, datos: ProductsInput): Products,
+    deleteProd(_id: ID!): Products,
+    deleteAll:Products,
   }
 `);
-
 
 const app = express()
 
 app.use(express.json())
 
-
 app.use('/graphql', graphqlHTTP({
     schema: schema,
     rootValue: {
-        findAll,
-        findById,
-        saveNewProd,
-        deleteAProd,
-        deleteAllProd,
-        updateProdById
+        allProds,
+        oneProd,
+        saveProd,
+        updateProd,
+        deleteProd,
+        deleteAll,
     },
     graphiql: true,
  }));
- 
 
 module.exports = app;

@@ -20,7 +20,7 @@ class ProductSv{
     }
 
     async findById(id){
-        try { 
+        try {
             const prodFound = await this.productDao.getById(id);
             return prodFound;
         } catch (error) {
@@ -71,6 +71,22 @@ class ProductSv{
 
 }
 
+
+/*function mostrar(data) {
+    if (Array.isArray(data)) {
+        
+        if (data.length > 0) {
+                for (let producto of data) {
+                    
+                    return new ProductoMostrable(producto).comoTextoPlano()
+                }                
+        } else {
+           return 'no hay datos para mostrar'
+        }
+    } else {
+        return new ProductoMostrable(data).comoTextoPlano()
+    }
+}*/
 
 const productSv = new ProductSv();
 
