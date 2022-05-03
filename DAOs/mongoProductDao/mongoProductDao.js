@@ -1,0 +1,83 @@
+const Products = require('../schemas/prodSchema')
+const mongoose = require('mongoose')
+const {asProdDto} = require('../../DTOs/productDto')
+
+const logger = require('../../utils/logger')
+
+class MongoProductDao{
+    constructor(mongo){
+        this.connect = mongo;
+        this.product = Products
+    }
+
+    async init(){
+        await mongoose.connect(this.connect)
+        logger.info('conectado a la colección products de mongo atlas')
+    }
+
+    async disconnect() {
+        await mongoose.disconnect()
+        console.log('personas dao en mongodb -> cerrado')
+    }
+
+    async getAll(){
+        try {
+            const products = await this.product.find({})
+            logger.info(products)
+            return asProdDto(products)
+        } catch (error) {
+            logger.error(`error en MongoProductDao metodo getAll: ${error}`)
+        }
+    }
+
+    async getById(idSearching) {
+        try {
+            const product = await this.product.findOne({ _id: idSearching })
+            return asProdDto(product)    
+        } catch (error) {
+            logger.error(`error en MongoProductDao metodo getById: ${error}`)
+        }
+
+    }
+
+    async save(newProduct) {
+        try {
+            console.log(newProduct)
+            await this.product.create(newProduct)
+            return asProdDto(newProduct)
+        } catch (error) {
+            logger.error(`error en MongoProductDao metodo save: ${error}`)
+        }
+
+    }
+
+    async deleteById(idByDelete) {
+        try {
+            const prodDelete = await this.product.findOneAndDelete({ _id: idByDelete })
+            return asProdDto(prodDelete)
+        } catch (error) {
+            logger.error(`error en MongoProductDao metodo deleteById: ${error}`)
+        }
+
+    }
+
+    async deleteAll() {
+        try {
+            await this.product.deleteMany({})
+        } catch (error) {
+            logger.error(`error en MongoProductDao metodo deleteAll: ${error}`)
+        }
+    }
+
+    async updateById(idByChange, newInput) {
+        try {
+            const prodUpdate = await this.product.findOneAndUpdate({ _id: idByChange }, { $set: newInput })
+            return asProdDto(prodUpdate)    
+        } catch (error) {
+            logger.error(`error en MongoProductDao metodo updateById: ${error}`)
+        }
+
+    }
+}
+
+module.exports = MongoProductDao;
