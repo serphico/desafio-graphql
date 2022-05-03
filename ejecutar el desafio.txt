@@ -1,0 +1,66 @@
+Inicializar como node server.js 'Mongo'
+
+entrar a la URL http://localhost:8080/graphql
+
+ejecutar los queries y mutations
+
+query {
+ allProds {
+    title,
+    price,
+    description,
+    photo,
+    category
+ }
+}
+
+
+query {
+ oneProd(_id:"62712f8233e0fd076932d348") {
+    title,
+    price,
+    description,
+    photo,
+    category
+ }
+}
+
+
+mutation {
+ saveProd(datos:       {
+        title: "Samsung S20 FE",
+        price: 60000,
+        description: "Celular requete copado",
+        photo: "celular4.png",
+        category: "celular",
+      }) {
+    title,
+    price,
+    description,
+    photo,
+    category
+ }
+}
+
+mutation {
+ deleteProd(_id:"62714167cbab633c9ff2d62d") {
+    title,
+    price,
+    description,
+    photo,
+    category
+ }
+}
+
+mutation {
+ deleteProd {
+    title,
+    price,
+    description,
+    photo,
+    category
+ }
+}
+
+
+
